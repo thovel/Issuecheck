@@ -81,14 +81,14 @@ void jira::fetch_issues(
         std::istringstream is (ssjson.str());
 
         read_json (is, pt);
-        auto error_message = pt.get_optional<std::string>("errorMessages");
-        if(error_message)
+        auto error_messages = pt.get_child_optional("errorMessages");
+        if(error_messages)
         {
             std::cout <<
-                         "error from JIRA:" << a_url.host() <<
-                         std::endl <<
-                         error_message <<
-                         std::endl;
+                 "error while requesting " << keys_of_requested_issues <<
+                 " like so: " << a_url << std::endl;
+            jira::printTree(std::cout, error_messages.get(), 0);
+            std::cout << std::endl;
         }
         else
         {
@@ -137,4 +137,44 @@ void jira::fetch_issues(
         std::cout << "error: " << e.what() << std::endl;
     }
 
+}
+
+namespace jira {
+std::string indent(int level);
+}
+std::string jira::indent(int level)
+{
+  std::string s;
+  for (int i=0; i<level; i++)
+      s += "  ";
+  return s;
+}
+
+void jira::printTree (std::ostream &os, ptree &pt, int level)
+{
+  if (pt.empty())
+  {
+    os << "\""<< pt.data()<< "\"";
+  }
+  else
+  {
+    if (level)
+        os << std::endl;
+
+    os << indent(level) << "{" << std::endl;
+    for (ptree::iterator pos = pt.begin(); pos != pt.end();)
+    {
+      os << indent(level+1) << "\"" << pos->first << "\": ";
+
+      jira::printTree(os,pos->second, level + 1);
+
+      ++pos;
+      if (pos != pt.end()) {
+        os << ",";
+      }
+      os << std::endl;
+    }
+    os << indent(level) << " }";
+  }
+  return;
 }

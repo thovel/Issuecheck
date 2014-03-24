@@ -22,8 +22,6 @@ using namespace boost::network;
 using namespace jira;
 
 
-void printTree(ptree &pt, int level);
-
 TEST(jira_util, positive)
 {
     thovel::jira_test_stuff stuff;
@@ -89,39 +87,3 @@ TEST(jira_util, positive)
 
 }
 
-std::string indent(int level)
-{
-  std::string s;
-  for (int i=0; i<level; i++)
-      s += "  ";
-  return s;
-}
-
-void printTree (ptree &pt, int level)
-{
-  if (pt.empty())
-  {
-    cout << "\""<< pt.data()<< "\"";
-  }
-  else
-  {
-    if (level)
-        cout << endl;
-
-    cout << indent(level) << "{" << endl;
-    for (ptree::iterator pos = pt.begin(); pos != pt.end();)
-    {
-      cout << indent(level+1) << "\"" << pos->first << "\": ";
-
-      printTree(pos->second, level + 1);
-
-      ++pos;
-      if (pos != pt.end()) {
-        cout << ",";
-      }
-      cout << endl;
-    }
-    cout << indent(level) << " }";
-  }
-  return;
-}

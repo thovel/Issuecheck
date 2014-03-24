@@ -43,5 +43,7 @@ void program_option_validity(validity &validity_,const boost::program_options::v
 void init_positional_options_description(boost::program_options::positional_options_description &pos_desc);
 const boost::filesystem::path init_config_file_path();
 
+
+
 }
 #endif // COMMIT_MESSAGE_H

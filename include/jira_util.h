@@ -4,6 +4,7 @@
 #include <boost/network/protocol/http/client.hpp>
 #include <boost/network/uri.hpp>
 #include <boost/program_options/variables_map.hpp>
+#include <boost/property_tree/ptree.hpp>
 #include <jira_query.h>
 #include <string>
 #include <ostream>
@@ -67,6 +68,7 @@ void fetch_issues(
         jira::issue_key_list &not_found_keys,
         std::vector<issue_metadata> &found_issues);
 
+void printTree (std::ostream &os, boost::property_tree::ptree &pt, int level);
 
 }
 

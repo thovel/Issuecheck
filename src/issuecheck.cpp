@@ -69,11 +69,19 @@ int main(int argc, char *argv[]) {
             std::string filename_message {vm["file"].as< std::string >()};
             if ( !boost::filesystem::exists( filename_message ) )
             {
-              cerr << "can't find " << filename_message << std::endl;
-              exit_status = 1;
+                cerr << "can't find " << filename_message << std::endl;
+                exit_status = 1;
             }
-            ifstream ifs_message {filename_message, std::ifstream::in};
-            ifs_message >> referred_keys;
+            else if ( !boost::filesystem::is_regular_file(filename_message) )
+            {
+                cerr << filename_message << " is not a regular file" << std::endl;
+                exit_status = 1;
+            }
+            else
+            {
+                ifstream ifs_message {filename_message, std::ifstream::in};
+                ifs_message >> referred_keys;
+            }
         }
         else if(vm.count("message") > 0)
         {
@@ -95,10 +103,6 @@ int main(int argc, char *argv[]) {
                 cerr << "check failed: your commit message should have at least one JIRA issue key" << std::endl;
                 exit_status = 1;
             }
-        }
-        else
-        {
-            cout << "your commit message refers to" << referred_keys << std::endl;
         }
 
     }
@@ -126,10 +130,10 @@ int main(int argc, char *argv[]) {
         {
             if(0 == found_issues.size())
                 cout << "no issues found" << std::endl;
-            else if( 1==found_issues.size())
-                cout << "issue found: " << std::endl;
+            /*else if( 1==found_issues.size())
+                cout << "issue found: ";
             else
-                cout << found_issues.size() << " issues found:" << std::endl;
+                cout << found_issues.size() << " issues found:" << std::endl;*/
 
             for(jira::issue_metadata  issue : found_issues)
                 cout << issue << std::endl;
@@ -172,17 +176,20 @@ int main(int argc, char *argv[]) {
                         cerr << "check failed: " << count_resolved << " issues are resolved while they must be unresolved" << std::endl;
                     exit_status = 1;
                 }
-                else
+                /*else
                 {
                     if(1 == count_resolved)
                         cout << "warning: an issue is resolved so it might not make sense to refer to it" << std::endl;
                     else
                         cout << "warning: " << count_resolved << " issues are resolved so it might not make sense to refer to them" << std::endl;
-                }
+                }*/
             }
         }
 
     }
+    else
+        cout << "your commit message refers to" << referred_keys << std::endl;
+
 
     if(vm.count("allowed-project-keys") > 0)
     {
