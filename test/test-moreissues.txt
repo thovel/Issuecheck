@@ -1,0 +1,4 @@
+a commit message with many issues:
+- BLA-1
+- BLA-2
+- BLA-3

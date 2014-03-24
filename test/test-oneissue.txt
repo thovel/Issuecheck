@@ -1,0 +1,1 @@
+A commit message with one (BLA-1) message

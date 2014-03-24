@@ -1,0 +1,3 @@
+* issuecheck
+
+Isseucheck aims to provide commandline services to programmers who need to embed issue id's in their commit messages.
