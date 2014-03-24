@@ -12,6 +12,8 @@
 #include "jira_query.h"
 #include "jira_util.h"
 
+#include "jira_test_stuff.h"
+
 using namespace std;
 
 using namespace boost::property_tree;
@@ -19,23 +21,22 @@ using namespace boost::network;
 
 using namespace jira;
 
-endpoint an_endpoint {"https://somejiraserver/rest/api/2"};
 
 void printTree(ptree &pt, int level);
 
 TEST(jira_util, positive)
 {
+    thovel::jira_test_stuff stuff;
+    endpoint an_endpoint {stuff.endpoint()};
+
     issue_query query_ { {"BLA-36","BLA-35"} };
     uri::uri a_url {make_search_url(an_endpoint, query_)};
 
     std::stringstream ss;
-    ss << a_url ;
-    ASSERT_EQ("https://some jira server/rest/api/2/search?jql=key%3DBLA-35%20OR%20key%3DBLA-36",
-                  ss.str());
 
     using my_client = http::basic_client<http::tags::http_default_8bit_tcp_resolve, 1,1> ;
     my_client client;
-    my_client::request request {make_request<my_client::request>(a_url,"some userid","some password")};
+    my_client::request request {make_request<my_client::request>(a_url,stuff.userid(),stuff.userid())};
 
     auto response = client.get(request);
 

@@ -12,6 +12,7 @@
 #include "jira_query.h"
 #include "jira_util.h"
 #include "message_util.h"
+#include "jira_test_stuff.h"
 
 using namespace std;
 
@@ -22,8 +23,11 @@ using namespace boost::network;
 using namespace jira;
 
 
+
 TEST(message_util, positive)
 {
+    thovel::jira_test_stuff stuff;
+
     po::options_description desc("Allowed options");
     message::init_options_description(desc);
 
@@ -32,11 +36,11 @@ TEST(message_util, positive)
     const char *av[ac];
     av[0] = "command";
     av[1] = "--endpoint";
-    av[2] = "https://somejiraserver:8080/jira/rest/api/2";
+    av[2] = stuff.endpoint().c_str();
     av[3] = "--userid";
-    av[4] = "someuserid";
+    av[4] = stuff.userid().c_str();
     av[5] = "--password";
-    av[6] = "somepassword";
+    av[6] = stuff.password().c_str();
     av[7] = "--require-existing";
     av[8] = "true";
     av[9] = "--require-unresolved";
