@@ -56,6 +56,25 @@ boost::function1<std::string, std::string> message::init_environment_name_mapper
     name_mapper = message::environment_parser_name_mapper();
     return name_mapper;
 }
+const boost::filesystem::path message::init_config_file_path()
+{
+    char *home_folder {getenv ("HOME")};
+    if(nullptr == home_folder)
+        home_folder = getenv ("USERPROFILE");
+
+    if(nullptr != home_folder)
+    {
+        boost::filesystem::path home_path {home_folder};
+        if(is_directory(home_path))
+        {
+            boost::filesystem::path config_file_path {home_folder};
+            config_file_path += home_path.preferred_separator;
+            config_file_path +=".issuecheck";
+            return config_file_path;
+        }
+    }
+    return boost::filesystem::path {""};
+}
 
 void message::init_positional_options_description(po::positional_options_description &pos_desc)
 {

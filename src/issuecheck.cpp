@@ -7,6 +7,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/filesystem.hpp>
+#include <stdlib.h>     /* getenv */
 
 #include <gtest/gtest.h>
 
@@ -31,6 +32,14 @@ int main(int argc, char *argv[]) {
 
     po::variables_map vm;
     po::store(po::parse_environment(desc, name_mapper), vm);
+
+    boost::filesystem::path config_file_path {message::init_config_file_path()};
+    if ( exists(config_file_path) && is_regular_file(config_file_path))
+    {
+        ifstream ifs_config_file {config_file_path.c_str(), std::ifstream::in};
+        po::store(po::parse_config_file(ifs_config_file,desc,true), vm);
+    }
+
     po::store(po::parse_command_line(argc, argv, desc), vm);
     po::notify(vm);
 
