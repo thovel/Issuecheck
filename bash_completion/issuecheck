@@ -4,7 +4,7 @@ _issuecheck()
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="--help --endpoint --userid --password --require-issue-key --require-existing --require-unresolved --require-project-key"
+    opts="$(issuecheck --list-long-options)"
 
     if [[ ${cur} == -* ]] ; then
         COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )

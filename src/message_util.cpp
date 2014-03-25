@@ -1,5 +1,6 @@
 #include <string>
 #include <sstream>
+#include <ostream>
 #include <boost/regex.hpp>
 
 #include "jira_issue.h"
@@ -7,6 +8,14 @@
 #include "message_util.h"
 
 namespace po = boost::program_options;
+
+namespace message {
+
+    struct environment_parser_name_mapper {
+      std::string operator()(std::string &environment_key) const;
+    };
+
+}
 
 void message::init_options_description(po::options_description &desc)
 {
@@ -21,17 +30,24 @@ void message::init_options_description(po::options_description &desc)
         ("show-issue-summary,S", po::bool_switch(), "show issue summary (and get issue from server to get them)")
         ("allowed-project-keys,P", po::value< std::vector< std::string> >()->multitoken(), "alow only JIRA issue keys that have one of [arg [arg]] as its JIRA project key")
         ("file,f", po::value<std::string>(), "use the contents of file [arg] as the message and ignore standard input")
-        ("message,m", po::value<std::string>(), "use [arg] as the message and ignore standard input");
+        ("message,m", po::value<std::string>(), "use [arg] as the message and ignore standard input")
+        ("list-long-options", "List all the long options");
 
 }
+void message::compgen_wordlist_longoptions(std::ostream &os, const po::options_description &desc)
+{
+    bool first=true;
+    for (const boost::shared_ptr<po::option_description> &option : desc.options())
+    {
+        if(!first)
+            os << ' ';
+        else
+            first = false;
 
-namespace message {
-
-    struct environment_parser_name_mapper {
-      std::string operator()(std::string &environment_key) const;
-    };
-
+        os << option->canonical_display_name(1);
+    }
 }
+
 std::string message::environment_parser_name_mapper::operator()(std::string &environment_key) const
 {
     if(environment_key == "ISSUECHECK_USERID")
@@ -89,6 +105,11 @@ void message::program_option_validity(message::validity &validity_, const po::va
         return;
     }
 
+    if (vm.count("list-long-options"))
+    {
+        validity_.valid();
+        return;
+    }
 
     bool require_existing = vm["require-existing"].as< bool >();
     bool require_unresolved = vm["require-unresolved"].as< bool >();

@@ -52,12 +52,19 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-
     if (vm.count("help"))
     {
-        cout << desc << "\n";
+         cout << desc << "\n";
+         return 1;
+    }
+    if (vm.count("list-long-options"))
+    {
+        message::compgen_wordlist_longoptions(cout, desc);
+        cout <<  std::endl;
         return 1;
     }
+
+
 
     int exit_status = 0;
     jira::issue_key_list referred_keys;
@@ -188,7 +195,10 @@ int main(int argc, char *argv[]) {
 
     }
     else
-        cout << "your commit message refers to" << referred_keys << std::endl;
+    {
+        if(referred_keys.size() > 0)
+            cout << "your commit message refers to" << referred_keys << std::endl;
+    }
 
 
     if(vm.count("allowed-project-keys") > 0)

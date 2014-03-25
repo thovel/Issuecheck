@@ -2,6 +2,7 @@
 #define COMMIT_MESSAGE_H
 
 #include <sstream>
+#include <ostream>
 
 #include <boost/program_options/cmdline.hpp>
 #include <boost/program_options/config.hpp>
@@ -42,8 +43,7 @@ class validity
 void program_option_validity(validity &validity_,const boost::program_options::variables_map &vm);
 void init_positional_options_description(boost::program_options::positional_options_description &pos_desc);
 const boost::filesystem::path init_config_file_path();
-
-
+void compgen_wordlist_longoptions(std::ostream &os, const boost::program_options::options_description &desc);
 
 }
 #endif // COMMIT_MESSAGE_H
