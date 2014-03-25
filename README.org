@@ -28,7 +28,7 @@ It provides fast answers on the commandline to the following questions:
 It will return an exit status of your choice so you can inform, warn or stop yourself when committing code.
 
 ** The code
-When I made issuecheck when I was searching for a simple challenge to aquaint myself with [[http://en.wikipedia.org/wiki/C%252B%252B11][C++11]] and [[http://www.boost.org/][boost C++ libraries]]. issuecheck seemed contains all I wanted to learn for now.
+I made issuecheck when I was searching for a simple challenge to aquaint myself with [[http://en.wikipedia.org/wiki/C%252B%252B11][C++11]] and [[http://www.boost.org/][boost C++ libraries]]. issuecheck seemed contains all I wanted to learn for now.
 - C++11
 - cmake
 - cpack
