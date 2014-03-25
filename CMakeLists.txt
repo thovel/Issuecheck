@@ -40,7 +40,7 @@ add_executable(runTests  src/message_util.cpp src/jira_util.cpp test/test_all.cp
 target_link_libraries(runTests ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_REGEX_LIBRARY} ${CPPNETLIB_LIBRARIES} ${GTEST_LIBRARIES} ${Boost_THREAD_LIBRARY}  ${Boost_LOG_LIBRARY} ${Boost_LOG_SETUP_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} pthread)
 
 # Link runTests with what we want to test and the GTest and pthread library
-add_executable(issuecheck src/message_util.cpp src/jira_util.cpp src/jira_issue.cpp src/jira_query.cpp src/issuecheck.cpp)
+add_executable(issuecheck src/message_util.cpp src/jira_util.cpp src/jira_issue.cpp src/jira_query.cpp src/main.cpp)
 target_link_libraries(issuecheck ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_REGEX_LIBRARY} ${CPPNETLIB_LIBRARIES} ${GTEST_LIBRARIES} ${Boost_THREAD_LIBRARY}  ${Boost_LOG_LIBRARY} ${Boost_LOG_SETUP_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} pthread)
 
 
