@@ -1,3 +1,39 @@
 * issuecheck
 
 Isseucheck aims to provide commandline services to programmers who need to embed issue id's in their commit messages.
+
+** Why issuecheck?
+More and more code is kept in sourcecode repositories. Changes to code is managed in issue tracking systems. Linking those two worlds is often done by referring to issues in commit messages. 
+
+Commit messages are often written in a coding state of mind. Coming up with the right issue id to put in the message is often felt as an unwelcome distraction.
+
+This tool aims to allow coders to stay focussed while referring to the right issues without having to change context by going into some gruesome webinterface to find the right issue number.
+
+Issuecheck aims to be unobtrusive. This means:
+- helping and not claiming
+- lean and mean
+- easy to install
+- rock solid
+
+** What can issuecheck do for you today?
+It provides a convenient way to (inobtrusively) inform you about JIRA issue keys that you might put in  your commit messages to your SCM software.
+
+It provides fast answers on the commandline to the following questions:
+- Does my commit message contain JIRA issues keys that comply to regex "[A-Z][A-Z0-9_]*?-[0-9]*" ?
+- Are the JIRA issue keys I refer to part of a project that I want to commit to?
+- Do the JIRA issues that I refer to, exist on my JIRA system?
+- What is the type, status and summary of the JIRA issues I refer to?
+- Are the JIRA issues that I refer to, resolved?
+
+It will return an exit status of your choice so you can inform, warn or stop yourself when committing code.
+
+** The code
+When I made issuecheck when I was searching for a simple challenge to aquaint myself with [[http://en.wikipedia.org/wiki/C%252B%252B11][C++11]] and [[http://www.boost.org/][boost C++ libraries]]. issuecheck seemed contains all I wanted to learn for now.
+- C++11
+- cmake
+- cpack
+- cpp_netlib
+- Boost program options
+- Boost regex 
+- Boost filesystem
+- Google test
