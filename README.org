@@ -36,4 +36,9 @@ I made issuecheck when I was searching for a simple challenge to aquaint myself 
 - Boost program options
 - Boost regex 
 - Boost filesystem
+- Boost encode
+- Boost uri
+- Boost property tree (json)
+- Boost function
+- Boost archive
 - Google test
