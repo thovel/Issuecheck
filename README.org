@@ -2,6 +2,8 @@
 
 Isseucheck aims to provide commandline services to programmers who need to embed issue id's in their commit messages.
 
+#+TOC: headlines 2
+
 ** Why issuecheck?
 More and more code is kept in sourcecode repositories. Changes to code is managed in issue tracking systems. Linking those two worlds is often done by referring to issues in commit messages. 
 
