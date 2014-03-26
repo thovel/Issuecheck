@@ -27,10 +27,46 @@ It provides fast answers on the commandline to the following questions:
 
 It will return an exit status of your choice so you can inform, warn or stop yourself when committing code.
 
+One way to find out what issuecheck can do is to play around with it.
+
+simply doing "issuecheck --[tab][tab]" will give you some options.
+
+The output of issuecheck -h:
+: issuecheck -h
+: Allowed options:
+:   -h [ --help ]                   produce help message
+:   -e [ --endpoint ] arg           absolute url to jira rest endpoint ending
+:                                   with ...rest/api/2 (no slash)
+:   -u [ --userid ] arg             a JIRA userid
+:   -p [ --password ] arg           a JIRA password
+:   -N [ --not-require-issue-key ]  do not require that at least one JIRA issue
+:                                   key is found in the message
+:   -E [ --require-existing ]       require all JIRA issue keys to represent
+:                                   existing JIRA issues (and get issue from
+:                                   server to find out)
+:   -U [ --require-unresolved ]     require all JIRA issues to be unresolved (and
+:                                   get issue from server to find out)
+:   -S [ --show-issue-summary ]     show issue summary (and get issue from server
+:                                   to get them)
+:   --project-keys-allowed arg      alow only JIRA issue keys that have one of
+:                                   [arg [arg]] as its JIRA project key
+:   --project-keys-preferred arg    warn if JIRA issue keys do not have one of
+:                                   [arg [arg]] as their JIRA project key. If the
+:                                   project-keys-allowed option is used, these
+:                                   keys must also be mentioned there.
+:   -f [ --file ] arg               use the contents of file [arg] as the message
+:                                   and ignore standard input
+:   -m [ --message ] arg            use [arg] as the message and ignore standard
+:                                   input
+:   --list-long-options             List all the long options
+
+
 ** Configure your git client repo
-I like to get some feedback when committing locally.
-in my repo there is a hidden folder called .git
-I make a new file called .git/hooks/commit-msg
+I like to get some feedback when committing locally. Git allows me to integrate issuecheck very easily:
+
+in my repo there is a hidden folder called .git. In this folder, I make a new file called .git/hooks/commit-msg. commit-msg is called by git after I type my commit message but before it is actually committed. 
+
+I have a few choices when I use issuecheck in combination with git. Below are a few examples:
 - If I want to inform myself about the issues I put in my commit messages ::
 : #!/bin/bash
 : issuecheck --file $1 --not-require-issue-key --project-keys-preferred FOO BAR
