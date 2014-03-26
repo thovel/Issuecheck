@@ -12,6 +12,10 @@
 *.la
 *.a
 
+# Cmake
+CPackConfig.cmake
+Makefile
+
 #tempory files
 *~
 #*#
