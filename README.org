@@ -87,6 +87,52 @@ This will only allow commits that have JIRA issue keys in them that start with F
 : exit
 This will work like #1 and also show me the titles of the JIRA issues that I typed if they were found on my JIRA server.
 
+** Alternatives to the command line
+If you use issuecheck alot you might grow tired of all the program option typing. For this reason issuecheck allows you to organize your options a bit.
+*** ~/.issuecheck
+you can use all the options in ~/.issuecheck that you use on the commandline.
+
+Here is a template for ~/.issuecheck
+
+: ## endpoint=arg
+: ## absolute url to jira rest endpoint ending with ...rest/api/2 (no slash)
+: # endpoint=
+: 
+: ## userid=arg
+: ## a JIRA userid
+: # userid=
+: 
+: ## password=arg
+: ## a JIRA password
+: # password=
+: 
+: ## not-require-issue-key true|false
+: ## do not require that at least one JIRA issue key is found in the message
+: # not-require-issue-key=false
+: 
+: ## require-existing
+: ## require all JIRA issue keys to represent existing JIRA issues 
+: ## (and get issue from server to find out)
+: # require-existing=false
+: 
+: ## require-unresolved
+: ## require all JIRA issues to be unresolved (and get issue from 
+: ## server to find out)
+: # require-unresolved=false
+: 
+: ## show-issue-summary
+: ## show issue summary (and get issue from server to get them)
+: # show-issue-summary=false
+: 
+: ## project-keys-allowed [arg [arg]*] 
+: ## alow only JIRA issue keys that have one of [arg [arg]] as its JIRA project key
+: # project-keys-allowed=
+: 
+: ## project-keys-preferred [arg [arg]]
+: ## warn if JIRA issue keys do not have one of [arg [arg]] as their JIRA project key. 
+: ## If the project-keys-allowed option is used, these keys must also be mentioned there.
+: #--project-keys-preferred arg    
+
 ** The code
 I made issuecheck when I was searching for a simple challenge to aquaint myself with [[http://en.wikipedia.org/wiki/C%252B%252B11][C++11]] and [[http://www.boost.org/][boost C++ libraries]]. issuecheck contains all I wanted to learn for now.
 - C++11
