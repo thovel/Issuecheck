@@ -169,71 +169,39 @@ istream& message::operator>>(istream& is, jira::issue_key_list& an_issue_key_lis
 
 }
 
-int message::check(const boost::program_options::variables_map &vm)
+int message::check(std::istream &is, const boost::program_options::variables_map &options)
 {
     int exit_status {0};
 
     jira::issue_key_list referred_keys;
-    {
-        using namespace message;
 
-        if(vm.count("file") > 0)
-        {
-            string filename_message {vm["file"].as< string >()};
-            if ( !boost::filesystem::exists( filename_message ) )
-            {
-                cerr << "can't find " << filename_message << endl;
-                exit_status = 1;
-            }
-            else if ( !boost::filesystem::is_regular_file(filename_message) )
-            {
-                cerr << filename_message << " is not a regular file" << endl;
-                exit_status = 1;
-            }
-            else
-            {
-                ifstream ifs_message {filename_message};
-                ifs_message >> referred_keys;
-            }
-        }
-        else if(vm.count("message") > 0)
-        {
-            istringstream is_message {vm["message"].as< string >()};
-            is_message >> referred_keys;
-        }
+    is >> referred_keys;
+    if(0 == referred_keys.size())
+    {
+        bool not_require_existing { options["not-require-issue-key"].as< bool >()};
+        if(not_require_existing)
+            cout << "your commit message refers to no JIRA issues" << endl;
         else
         {
-            cin >> referred_keys;
+            cerr << "check failed: your commit message should have at least one JIRA issue key" << endl;
+            exit_status = 1;
         }
-
-        if(0 == referred_keys.size())
-        {
-            bool not_require_existing { vm["not-require-issue-key"].as< bool >()};
-            if(not_require_existing)
-                cout << "your commit message refers to no JIRA issues" << endl;
-            else
-            {
-                cerr << "check failed: your commit message should have at least one JIRA issue key" << endl;
-                exit_status = 1;
-            }
-        }
-
     }
 
     if(referred_keys.size() > 0)
     {
-        bool require_existing { vm["require-existing"].as< bool >()};
-        bool require_unresolved { vm["require-unresolved"].as< bool >()};
-        bool show_issue_summary { vm["show-issue-summary"].as< bool >()};
+        bool require_existing { options["require-existing"].as< bool >()};
+        bool require_unresolved { options["require-unresolved"].as< bool >()};
+        bool show_issue_summary { options["show-issue-summary"].as< bool >()};
 
         if(!require_existing && !require_unresolved && !show_issue_summary)
             cout << "your commit message refers to" << referred_keys << endl;
 
         if(require_existing || require_unresolved || show_issue_summary)
         {
-            jira::endpoint an_endpoint {vm["endpoint"].as<string>()};
-            string a_userid {vm["userid"].as<string>()};
-            string a_password {vm["password"].as<string>()};
+            jira::endpoint an_endpoint {options["endpoint"].as<string>()};
+            string a_userid {options["userid"].as<string>()};
+            string a_password {options["password"].as<string>()};
 
             jira::issue_key_list not_found_keys {referred_keys};
             vector<jira::issue_metadata> found_issues;
@@ -293,10 +261,10 @@ int message::check(const boost::program_options::variables_map &vm)
         }
     }
 
-    if(vm.count("allowed-project-keys") > 0)
+    if(options.count("allowed-project-keys") > 0)
     {
         jira::issue_key_list illegal_keys;
-        vector<string> allowed_project_keys { vm["allowed-project-keys"].as< vector< string> >() };
+        vector<string> allowed_project_keys { options["allowed-project-keys"].as< vector< string> >() };
         stringstream ss_required_project_keys {};
         int nr_allowed_project_key=0;
         for(const string &allowed_project_key : allowed_project_keys)

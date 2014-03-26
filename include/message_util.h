@@ -44,7 +44,7 @@ void program_option_validity(validity &validity_,const boost::program_options::v
 void init_positional_options_description(boost::program_options::positional_options_description &pos_desc);
 const boost::filesystem::path init_config_file_path();
 void compgen_wordlist_longoptions(std::ostream &os, const boost::program_options::options_description &desc);
-int check(const boost::program_options::variables_map &vm);
+int check(std::istream &is, const boost::program_options::variables_map &options);
 
 }
 #endif // COMMIT_MESSAGE_H
