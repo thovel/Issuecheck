@@ -87,8 +87,20 @@ This will only allow commits that have JIRA issue keys in them that start with F
 : exit
 This will work like #1 and also show me the titles of the JIRA issues that I typed if they were found on my JIRA server.
 
-** Alternatives to the command line
+** Alternatives to the command line options
 If you use issuecheck alot you might grow tired of all the program option typing. For this reason issuecheck allows you to organize your options a bit.
+*** environment variables
+The following lines might be in your .bashrc or .profile
+
+: ISSUECHECK_USERID=thovel
+: export ISSUECHECK_USERID
+: 
+: ISSUECHECK_PASSWORD=xxxxx
+: export ISSUECHECK_PASSWORD
+: 
+: ISSUECHECK_ENDPOINT=https://[myjirahost]/.../rest/api/2
+: export ISSUECHECK_ENDPOINT
+
 *** ~/.issuecheck
 you can use all the options in ~/.issuecheck that you use on the commandline.
 
