@@ -31,12 +31,22 @@ It will return an exit status of your choice so you can inform, warn or stop you
 I like to get some feedback when committing locally.
 in my repo there is a hidden folder called .git
 I make a new file called .git/hooks/commit-msg
-- If I do not want to check my jira server and never stop my commits ::
+1. If I want to inform myself about the issues I put in my commit messages ::
 : #!/bin/bash
-: issuecheck --file $1 --not-require-issue-key --allowed-project-keys FOO BAR
+: issuecheck --file $1 --not-require-issue-key --project-keys-preferred FOO BAR
 : exit
-This will tell me if I forget to refer to an issue and that my issue is not in the projects FOO or BAR.
-
+This will tell me if I forget to refer to an issue and that my issue is not in the projects FOO or BAR. It will never stop my commits. If I want to improve my commit message I will simply use "git commit --amend" after I notice shortcomings. The output from "issuecheck" will be shown to me as part of the git commit output.
+2. If I want ensure that I commit sensible JIRA issues ::
+: #!/bin/bash
+: issuecheck --file $1 --project-keys-allowed FOO BAR
+: exit
+This will only allow commits that have JIRA issue keys in them that start with FOO or BAR.
+3. If I want to see the titles of the JIRA issues that I put in my commit messages ::
+: #!/bin/bash
+: issuecheck --file $1 --not-require-issue-key --project-keys-preferred FOO BAR \
+: --endpoint https://[myjirahost]/.../rest/api/2 --userid thovel --password xxxxxx
+: exit
+This will work like #1 and also show me the titles of the JIRA issues that I typed if they were found on my JIRA server. 
 
 ** The code
 I made issuecheck when I was searching for a simple challenge to aquaint myself with [[http://en.wikipedia.org/wiki/C%252B%252B11][C++11]] and [[http://www.boost.org/][boost C++ libraries]]. issuecheck seemed contains all I wanted to learn for now.
