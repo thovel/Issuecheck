@@ -163,7 +163,7 @@ void message::program_option_validity(message::validity &validity_, const po::va
     }
     if(preferred_but_not_allowed.size() > 0)
     {
-        validity_.tips << "project-keys-preferred must also be in project-keys-allowed\n";
+        validity_.tips << "project-keys-preferred must also be in project-keys-allowed. if there are no project-keys-allowed, any project-key is allowed\n";
         validity_.invalid();
     }
 
@@ -211,8 +211,7 @@ int message::check(std::istream &is, const boost::program_options::variables_map
             exit_status = 1;
         }
     }
-
-    if(referred_keys.size() > 0)
+    else if(referred_keys.size() > 0)
     {
         const bool &require_existing { options["require-existing"].as< bool >()};
         const bool &require_unresolved { options["require-unresolved"].as< bool >()};
@@ -283,78 +282,81 @@ int message::check(std::istream &is, const boost::program_options::variables_map
                 }
             }
         }
-    }
 
-    {
-        jira::issue_key_list illegal_keys;
-
-        if(options.count("project-keys-allowed") > 0)
         {
-            const vector<string> &allowed_project_keys { options["project-keys-allowed"].as< vector< string> >() };
-            stringstream ss_required_project_keys {};
-            int nr_allowed_project_key=0;
-            for(const string &allowed_project_key : allowed_project_keys)
+            jira::issue_key_list illegal_keys;
+
+            if(options.count("project-keys-allowed") > 0)
             {
-                nr_allowed_project_key++;
-                if(1 != nr_allowed_project_key)
-                    ss_required_project_keys << " or ";
-                ss_required_project_keys <<  allowed_project_key;
-            }
-            string s_required_project_keys {ss_required_project_keys.str()};
-            for(const jira::issue_key &referred_issue_key : referred_keys)
-            {
-                bool found=false;
+                const vector<string> &allowed_project_keys { options["project-keys-allowed"].as< vector< string> >() };
+                stringstream ss_required_project_keys {};
+                int nr_allowed_project_key=0;
                 for(const string &allowed_project_key : allowed_project_keys)
-                    if(allowed_project_key == referred_issue_key.project_key())
-                        found=true;
+                {
+                    nr_allowed_project_key++;
+                    if(1 != nr_allowed_project_key)
+                        ss_required_project_keys << " or ";
+                    ss_required_project_keys <<  allowed_project_key;
+                }
+                string s_required_project_keys {ss_required_project_keys.str()};
+                for(const jira::issue_key &referred_issue_key : referred_keys)
+                {
+                    bool found=false;
+                    for(const string &allowed_project_key : allowed_project_keys)
+                        if(allowed_project_key == referred_issue_key.project_key())
+                            found=true;
 
-                if(!found)
-                    illegal_keys.insert(referred_issue_key);
+                    if(!found)
+                        illegal_keys.insert(referred_issue_key);
+                }
+
+                if(illegal_keys.size() == 1)
+                {
+                    cerr << "check failed: " << illegal_keys << " must be in project " << s_required_project_keys << endl;
+                    exit_status = 1;
+                }
+                else if(illegal_keys.size() > 1)
+                {
+                    cerr << "check failed: " << illegal_keys << " must all be in project " << s_required_project_keys << endl; ;
+                    exit_status = 1;
+                }
             }
 
-            if(illegal_keys.size() == 1)
+            if(options.count("project-keys-preferred") > 0)
             {
-                cerr << "check failed: " << illegal_keys << " must be in project " << s_required_project_keys << endl;
-                exit_status = 1;
-            }
-            else if(illegal_keys.size() > 1)
-            {
-                cerr << "check failed: " << illegal_keys << " must all be in project " << s_required_project_keys << endl; ;
-                exit_status = 1;
-            }
-        }
-
-        if(options.count("project-keys-preferred") > 0)
-        {
-            jira::issue_key_list not_preferred_keys;
-            const vector<string> &preferred_project_keys { options["project-keys-preferred"].as< vector< string> >() };
-            stringstream ss_preferred_project_keys {};
-            int nr_preferred_project_key=0;
-            for(const string &preferred_project_key : preferred_project_keys)
-            {
-                nr_preferred_project_key++;
-                if(1 != nr_preferred_project_key)
-                    ss_preferred_project_keys << " or ";
-                ss_preferred_project_keys <<  preferred_project_key;
-            }
-            string s_preferred_project_keys {ss_preferred_project_keys.str()};
-            for(const jira::issue_key &referred_issue_key : referred_keys)
-            {
-                bool found=false;
+                jira::issue_key_list not_preferred_keys;
+                const vector<string> &preferred_project_keys { options["project-keys-preferred"].as< vector< string> >() };
+                stringstream ss_preferred_project_keys {};
+                int nr_preferred_project_key=0;
                 for(const string &preferred_project_key : preferred_project_keys)
-                    if(preferred_project_key == referred_issue_key.project_key())
-                        found=true;
+                {
+                    nr_preferred_project_key++;
+                    if(1 != nr_preferred_project_key)
+                        ss_preferred_project_keys << " or ";
+                    ss_preferred_project_keys <<  preferred_project_key;
+                }
+                string s_preferred_project_keys {ss_preferred_project_keys.str()};
+                for(const jira::issue_key &referred_issue_key : referred_keys)
+                {
+                    bool found=false;
+                    for(const string &preferred_project_key : preferred_project_keys)
+                        if(preferred_project_key == referred_issue_key.project_key())
+                            found=true;
 
-                if(!found && illegal_keys.end() == illegal_keys.find(referred_issue_key))
-                    not_preferred_keys.insert(referred_issue_key);
+                    if(!found && illegal_keys.end() == illegal_keys.find(referred_issue_key))
+                        not_preferred_keys.insert(referred_issue_key);
+                }
+
+                if(not_preferred_keys.size() == 1)
+                    cout << "warning: " << not_preferred_keys << " is not in one of the preferred projects: " << s_preferred_project_keys << endl;
+                else if(not_preferred_keys.size() > 1)
+                    cout << "warning: " << not_preferred_keys << " are not in one of the preferred projects: " << s_preferred_project_keys << endl; ;
             }
-
-            if(not_preferred_keys.size() == 1)
-                cout << "warning: " << not_preferred_keys << " are not in one of the preferred projects " << s_preferred_project_keys << endl;
-            else if(not_preferred_keys.size() > 1)
-                cout << "warning: " << not_preferred_keys << " is not in one of the preferred projects  " << s_preferred_project_keys << endl; ;
         }
-    }
 
+    } // if(referred_keys.size() > 0)
+
+
+    return exit_status;
 
 }
