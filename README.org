@@ -35,7 +35,7 @@ I make a new file called .git/hooks/commit-msg
 : #!/bin/bash
 : issuecheck --file $1 --not-require-issue-key --allowed-project-keys FOO BAR
 : exit
-This will tell me if I forget to refer to an issue and that my issue is not in the projects FOO or BAR
+This will tell me if I forget to refer to an issue and that my issue is not in the projects FOO or BAR.
 
 
 ** The code
