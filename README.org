@@ -97,10 +97,19 @@ now it should all work
 
 **** Other workaround: temporarily change your locale
 
+run this every time after you log into your system
+: export LC_ALL="en_US.UTF-8"
 
+**** Other workaround: tell your ssh client to stop forwarding
 
-**** Other workaround: tell your ssh client to forward en_US
+Stop forwarding locale from your client
+/etc/ssh/ssh_config, comment out
+: #SendEnv LANG...
 
+**** Other workaround: stop ssh server from accepting client locales
 
+stop accepting on the server
+/etc/ssh/sshd_config , comment out
+: #AcceptEnv LANG LC_*
 
 
