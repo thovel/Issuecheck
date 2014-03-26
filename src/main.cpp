@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 
     if(program_options.count("file") > 0)
     {
-        string filename_message {program_options["file"].as< string >()};
+        const string &filename_message {program_options["file"].as< string >()};
         if ( !boost::filesystem::exists( filename_message ) )
         {
             cerr << "can't find " << filename_message << endl;
