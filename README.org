@@ -58,9 +58,9 @@ This is a vulnerability of the Boost libraries that will be fixed when the guys 
 Recommended workaround: generate the missing language
 
 - find out what your local is ::
+    run this command on your prompt:
     : locale
     on my system it gives yo something like this:
-    user@host:~$ locale
     : LANG=en_US.UTF-8
     : LANGUAGE=
     : LC_CTYPE="en_US.UTF-8"
