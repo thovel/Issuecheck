@@ -2,12 +2,12 @@
 
 Isseucheck aims to provide commandline services to programmers who need to embed issue id's in their commit messages.
 
-- [[Why issuecheck?]]
-- [[What can issuecheck do for you today?]]
-- [[Configure your git client repo]]
-- [[Alternatives to the command line options]]
-- [[The code]]
-- [[Known Issues]]
+- [[#Why%20issuecheck?][#Why issuecheck?]]
+- [[#What%20can%20issuecheck%20do%20for%20you%20today?][#What can issuecheck do for you today?]]
+- [[#Configure%20your%20git%20client%20repo][#Configure your git client repo]]
+- [[#Alternatives%20to%20the%20command%20line%20options][#Alternatives to the command line options]]
+- [[#The%20code][#The code]]
+- [[#Known%20Issues][#Known Issues]]
 
 ** Why issuecheck?
 More and more code is kept in sourcecode repositories. Changes to code is managed in issue tracking systems. Linking those two worlds is often done by referring to issues in commit messages. 
