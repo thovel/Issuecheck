@@ -88,7 +88,7 @@ This will only allow commits that have JIRA issue keys in them that start with F
 This will work like #1 and also show me the titles of the JIRA issues that I typed if they were found on my JIRA server.
 
 ** The code
-I made issuecheck when I was searching for a simple challenge to aquaint myself with [[http://en.wikipedia.org/wiki/C%252B%252B11][C++11]] and [[http://www.boost.org/][boost C++ libraries]]. issuecheck seemed contains all I wanted to learn for now.
+I made issuecheck when I was searching for a simple challenge to aquaint myself with [[http://en.wikipedia.org/wiki/C%252B%252B11][C++11]] and [[http://www.boost.org/][boost C++ libraries]]. issuecheck contains all I wanted to learn for now.
 - C++11
 - cmake
 - cpack
