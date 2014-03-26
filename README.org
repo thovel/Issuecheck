@@ -29,7 +29,15 @@ It will return an exit status of your choice so you can inform, warn or stop you
 
 ** Configure your git client repo
 I like to get some feedback when committing locally.
-This is how I do it:
+in my repo there is a hidden folder called .git
+I make a new file called .git/hooks/commit-msg
+- If I do not want to check my jira server and never stop my commits ::
+: #!/bin/bash
+: issuecheck --file $1 --not-require-issue-key --allowed-project-keys FOO BAR
+: exit
+This will tell me if I forget to refer to an issue and that my issue is not in the projects FOO or BAR
+
+
 ** The code
 I made issuecheck when I was searching for a simple challenge to aquaint myself with [[http://en.wikipedia.org/wiki/C%252B%252B11][C++11]] and [[http://www.boost.org/][boost C++ libraries]]. issuecheck seemed contains all I wanted to learn for now.
 - C++11
