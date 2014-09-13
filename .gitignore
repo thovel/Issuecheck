@@ -16,6 +16,9 @@
 CPackConfig.cmake
 Makefile
 
+#IntelliJ idea
+.idea/**
+
 #tempory files
 *~
 #*#
